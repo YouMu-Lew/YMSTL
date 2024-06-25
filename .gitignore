@@ -33,7 +33,7 @@
 
 .vscode/
 .vs/
-.MyCppSTL/
+MyCppSTL/
 
 *.sln
 *.vcxproj
