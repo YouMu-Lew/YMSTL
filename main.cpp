@@ -14,13 +14,13 @@ void print(std::vector<T>& v, std::string pre = "") {
 }
 
 int main() {
-
+	/*
 	std::cout << "----------BubbleSort Test-----------" << std::endl;
 	std::vector<int> v1 = { 1, 4, 6, 568, 678, 67, 45, 34, 5, -1 };
 	print(v1, "v1:");
-	ymstl::bubbleSort(v1.begin(), v1.end(), std::greater<int>());
+	ymstl::bubbleSort(v1.begin(), v1.end(), std::greater<>{});
 	print(v1, "sorted by ymstl v1 £º");
-	sort(v1.begin(), v1.end(), std::less<int>());
+	sort(v1.begin(), v1.end(), std::less<>());
 	print(v1, "sorted by sort v1 £º");
 	std::cout << "-------------------------------------" << std::endl;
 
@@ -43,4 +43,19 @@ int main() {
 	ymstl::insertionSort(v4.begin(), v4.end());
 	print(v4, "sorted by insertionSort v4: ");
 
+	std::vector<int> v5 = { 1, -4, 6, 568, 68, 67, 45, 34, 5, -1,0 };
+	print(v5, "v5: ");
+	//ymstl::sort(v5);
+	//ymstl::sort(v5.begin(), v5.end());
+	ymstl::sort(v5.begin(), v5.end(), std::greater<int>());
+	print(v5, "sorted by mySort v5: ");
+	*/
+
+	{
+		ymstl::Timer timer("v6");
+		std::vector<double> v6 = { 123.234,23.,4.23,4.2,3.5,.2,5.34,6.34 };
+		print(v6, "v6: ");
+		ymstl::quickSort(v6.begin(), v6.end());
+		print(v6, "quickSorted v6: ");
+	}
 }

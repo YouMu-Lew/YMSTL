@@ -1,13 +1,22 @@
 
+#pragma once
+#include "Utils.h"
+
 namespace ymstl {
-	template <typename T>
-	static void swap(T& a, T& b) {
-		T temp = a;
-		a = b;
-		b = temp;
+	template <class Ty>
+	const static void sort(Ty& list) {
+		bubbleSort(list.begin(), list.end());
 	}
 
-	const static auto less = [](auto a, auto b)->bool {return a < b; };
+	template <class Iter>
+	const static void sort(Iter _first, Iter _last) {
+		bubbleSort(_first, _last);
+	}
+
+	template <class Iter, class Comp>
+	const static void sort(Iter _first, Iter _last, Comp _comp) {
+		bubbleSort(_first, _last, _comp);
+	}
 
 	/// @brief 冒泡排序
 	/// @tparam Iter
@@ -76,7 +85,7 @@ namespace ymstl {
 		Iter cur = _begin + 1;
 		while (_end - sortedIt > 1) {
 			cur = sortedIt + 1;
-			while(comp(*cur, *(cur-1))) {
+			while (comp(*cur, *(cur - 1))) {
 				swap(*cur, *(cur - 1));
 				cur--;
 				if (cur == _begin)break;
@@ -84,8 +93,37 @@ namespace ymstl {
 			++sortedIt;
 		}
 	}
+
 	template <typename Iter>
 	const static void insertionSort(Iter _begin, Iter _end) {
 		insertionSort(_begin, _end, less);
 	}
+
+	template <typename Iter, typename Compare>
+	const static void quickSort(Iter _begin, Iter _end, Compare _comp) {
+		if (_end - _begin == 1) return;
+		Iter it = _begin, left = _begin, right = _end - 1;
+		while (left != right) {
+			++it;
+			if (*it == *_begin) {
+				continue;
+			}
+			if (_comp(*it, *_begin)) {
+				swap(*left, *it);
+				++left;
+			}
+			else {
+				swap(*right, *it);
+				--right;
+			}
+		}
+		quickSort(_begin, left);
+		quickSort(right, _end);
+	}
+
+	template <typename Iter>
+	const static void quickSort(Iter _begin, Iter _end) {
+		quickSort(_begin, _end, less);
+	}
+
 };  // namespace ymstl
