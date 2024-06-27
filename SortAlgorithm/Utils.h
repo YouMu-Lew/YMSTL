@@ -15,9 +15,9 @@ namespace ymstl {
 
 	// return a random integer between [left,right]
 	int randomInt(int left = 0, int right = 10) {
-		std::random_device rd;// ·ÇÈ·¶¨ÐÔËæ»úÊýÉú³ÉÆ÷
-		std::mt19937 mt_r(rd());// Ê¹ÓÃMersenne twisterËã·¨Ëæ»úÊýÉú³ÉÆ÷
-		std::uniform_int_distribution<> distrib(left, right); // Ëæ»ú¾ùÔÈ·Ö²¼[left,right]Çø¼ä
+		std::random_device rd;// ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		std::mt19937 mt_r(rd());// Ê¹ï¿½ï¿½Mersenne twisterï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		std::uniform_int_distribution<> distrib(left, right); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·Ö²ï¿½[left,right]ï¿½ï¿½ï¿½ï¿½
 		return distrib(mt_r);
 	}
 
@@ -52,11 +52,12 @@ namespace ymstl {
 	};
 
 	template<class Ty>
-	void printVector(Ty& v, std::string pre = "") {
+	void printVector(const Ty& v, std::string pre = "") {
 		std::cout << pre << std::endl;
-		for (auto i : v)
-			std::cout << i << " ";
+		for (int i = 0; i < v.size(); i++)
+			std::cout << v[i] << " ";
 		std::cout << std::endl;
 		return;
 	}
+
 }
