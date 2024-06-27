@@ -50,4 +50,13 @@ namespace ymstl {
 			Stop();
 		}
 	};
+
+	template<class Ty>
+	void printVector(Ty& v, std::string pre = "") {
+		std::cout << pre << std::endl;
+		for (auto i : v)
+			std::cout << i << " ";
+		std::cout << std::endl;
+		return;
+	}
 }
