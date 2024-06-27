@@ -1,8 +1,10 @@
 #include "./SortAlgorithm/Sort.h"
+#include "./MySTL/Array.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <array>
 
 template<typename T>
 void print(std::vector<T>& v, std::string pre = "") {
@@ -49,7 +51,7 @@ int main() {
 	//ymstl::sort(v5.begin(), v5.end());
 	ymstl::sort(v5.begin(), v5.end(), std::greater<int>());
 	print(v5, "sorted by mySort v5: ");
-	*/
+	
 
 	{
 		ymstl::Timer timer("v6");
@@ -58,4 +60,17 @@ int main() {
 		ymstl::quickSort(v6.begin(), v6.end());
 		print(v6, "quickSorted v6: ");
 	}
+	*/
+
+	int n = 5;
+	int array[5] = { 1,3,4,1};
+	ymstl::Array<int, 5> myArray{};
+	myArray[1] = 2;
+	ymstl::Array<int, myArray.size()> a1;
+	for (int i = 0; i < myArray.size(); i++) {
+		std::cout << myArray[i] << std::endl;
+	}
+	std::cout << array;
+	std::cout << myArray.data();
+	//std::cin.get();
 }
