@@ -1,76 +1,75 @@
-#include <algorithm>
-#include <array>
+//#include <algorithm>
+//#include <array>
 #include <iostream>
-#include <string>
-#include <vector>
-#include "./MySTL/Array.h"
-#include "./MySTL/Vector.h"
-#include "./SortAlgorithm/Sort.h"
+//#include <string>
+//#include <vector>
+//#include "./MySTL/Array.h"
+//#include "./MySTL/Vector.h"
+//#include "./SortAlgorithm/Sort.h"
+//
+//using namespace ymstl;
 
-using namespace ymstl;
+class String {
+public:
+	String() = default;
+	String(const char* str) {
+		printf("String is Created\n");
+		_size = strlen(str);
+		_data = new char[_size];
+		memcpy(_data, str, _size);
+	}
 
-class Test {
-   public:
-    int a;
-    int b;
+	String(const String& other) {
+		printf("String is Copied\n");
+		_size = other._size;
+		_data = new char[_size];
+		memcpy(_data, other._data, _size);
+	}
 
-    Test() {
-        this->a = 0;
-        this->b = 0;
-    }
+	String(String&& other) noexcept {
+		printf("String is Moved\n");
+		_size = other._size;
+		_data = other._data;
 
-    Test(int a) {
-        this->a = a;
-        this->b = 0;
-    }
+		// It's very important!
+		// Setting to `nullptr` ensures the destructor won't release the original memory
+		other._data = nullptr;
+		other._size = 0;
+	}
 
-    Test(int a, int b) {
-        this->a = a;
-        this->b = b;
-    }
+	~String() {
+		printf("String is Destroyed\n");
+		delete _data;
+	}
 
-    Test(Test& t) : a(t.a), b(t.b) { std::cout << "copy" << std::endl; }
+	void print() {
+		for (size_t i = 0; i < _size; i++)
+			printf("%c", _data[i]);
+		printf("\n");
+	}
 
-    Test(Test&& t) {
-        this->a = t.a;
-        this->b = t.b;
-        std::cout << "move" << std::endl;
-    }
-
-    ~Test() { std::cout << "destory" << std::endl; }
-
-    Test& operator=(Test& t) {
-        this->a = t.a;
-        this->b = t.b;
-        std::cout << "assign" << std::endl;
-        return *this;
-    }
+private:
+	size_t _size;
+	char* _data;
 };
 
-void printVector(const Vector<Test>& v, std::string pre = "") {
-    std::cout << pre;
-    for (int i = 0; i < v.size(); i++)
-        std::cout << v[i].a << " " << v[i].b << " ";
-    std::cout << std::endl << "------------------------" << std::endl;
-    return;
-}
+class Entity {
+public:
+	Entity(const String& name) :_name(name) {}
+
+	Entity(String&& name) :_name(std::move(name)) {}
+
+	void printName() {
+		_name.print();
+	}
+
+private:
+	String _name;
+};
 
 int main() {
-    Vector<Test> a;
-    a.push_back(Test(1, 2));
-    printVector(a);
-    a.push_back(Test(3));
-    printVector(a);
-    a.push_back(Test());
-    printVector(a);
-    a.push_back(Test(2, 3));
-    printVector(a);
-    a.pop_back();
-    a.push_back(Test(2, 3));
+	Entity entity("YouMu");
+	entity.printName();
 
-    printVector(a);
-
-    std::vector<int> b(3, 4);
-
-    // std::cin.get();
+	std::cin.get();
 }
