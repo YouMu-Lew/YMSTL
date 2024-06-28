@@ -4,10 +4,10 @@
 //#include <string>
 //#include <vector>
 //#include "./MySTL/Array.h"
-//#include "./MySTL/Vector.h"
+#include "./MySTL/Vector.h"
 //#include "./SortAlgorithm/Sort.h"
 //
-//using namespace ymstl;
+using namespace ymstl;
 
 class String {
 public:
@@ -80,35 +80,14 @@ private:
 };
 
 int main() {
-	String name = "ym";
-
-	printf("name: ");
-	name.print();
-
-	String name2 = std::move(name);
-
-	printf("name: ");
-	name.print();
-	printf("name2: ");
-	name2.print();
-
-	String name3("Cherno");
-
-	printf("name: ");
-	name.print();
-	printf("name2: ");
-	name2.print();
-	printf("name3: ");
-	name3.print();
-
-	name3 = std::move(name2);
-
-	printf("name: ");
-	name.print();
-	printf("name2: ");
-	name2.print();
-	printf("name3: ");
-	name3.print();
+	Vector<int> v1;
+	v1.print();
+	v1.push_back(1);
+	v1.print();
+	v1.push_back(2);
+	v1.print();
+	v1.push_back(3);
+	v1.print();
 
 	//std::cin.get();
 }
