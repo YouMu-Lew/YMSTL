@@ -15,9 +15,9 @@ namespace ymstl {
 
 	// return a random integer between [left,right]
 	int randomInt(int left = 0, int right = 10) {
-		std::random_device rd;// ��ȷ���������������
-		std::mt19937 mt_r(rd());// ʹ��Mersenne twister�㷨�����������
-		std::uniform_int_distribution<> distrib(left, right); // ������ȷֲ�[left,right]����
+		std::random_device rd;// Use a random device to generate a seed
+		std::mt19937 mt_r(rd());// Use the Mersenne Twister algorithm to generate random numbers
+		std::uniform_int_distribution<> distrib(left, right); // Create a uniform integer distribution within the range [left, right]
 		return distrib(mt_r);
 	}
 
