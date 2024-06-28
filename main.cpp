@@ -11,7 +11,8 @@
 
 class String {
 public:
-	String() = default;
+	String() { printf("String is Created default\n"); }
+
 	String(const char* str) {
 		printf("String is Created\n");
 		_size = strlen(str);
@@ -37,9 +38,20 @@ public:
 		other._size = 0;
 	}
 
+	String& operator=(String&& other) noexcept {
+		printf("String is Moved by `operator=`\n");
+		delete[] _data;	// If not done, it might lead to memory leaks.
+		_size = other._size;
+		_data = other._data;
+		other._data = nullptr;
+		other._size = 0;
+
+		return *this;
+	}
+
 	~String() {
 		printf("String is Destroyed\n");
-		delete _data;
+		delete[] _data;
 	}
 
 	void print() {
@@ -49,8 +61,8 @@ public:
 	}
 
 private:
-	size_t _size;
-	char* _data;
+	size_t _size = 0;
+	char* _data = nullptr;
 };
 
 class Entity {
@@ -68,8 +80,35 @@ private:
 };
 
 int main() {
-	Entity entity("YouMu");
-	entity.printName();
+	String name = "ym";
 
-	std::cin.get();
+	printf("name: ");
+	name.print();
+
+	String name2 = std::move(name);
+
+	printf("name: ");
+	name.print();
+	printf("name2: ");
+	name2.print();
+
+	String name3("Cherno");
+
+	printf("name: ");
+	name.print();
+	printf("name2: ");
+	name2.print();
+	printf("name3: ");
+	name3.print();
+
+	name3 = std::move(name2);
+
+	printf("name: ");
+	name.print();
+	printf("name2: ");
+	name2.print();
+	printf("name3: ");
+	name3.print();
+
+	//std::cin.get();
 }
