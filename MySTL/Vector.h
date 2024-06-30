@@ -5,7 +5,7 @@ namespace ymstl {
 	public:
 		Vector() { _reAllocate(2); }
 
-		~Vector() { 
+		~Vector() {
 			clear();
 		}
 
@@ -53,7 +53,7 @@ namespace ymstl {
 				_reAllocate(_capacity + _capacity / 2);
 			}
 			printf("emplace_back a new element\n");
-			_data[_size] = T(std::forward<Args>(args)...);
+			new(&_data[_size]) T(std::forward<Args>(args)...);
 			return _data[_size++];
 		}
 
@@ -70,7 +70,6 @@ namespace ymstl {
 				_data[i].~T();
 			}
 			_size = 0;
-			_data = nullptr;
 		}
 
 		void print() {

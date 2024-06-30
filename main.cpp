@@ -96,25 +96,20 @@ private:
 
 int main() {
 	Vector<String> v1;
-	v1.push_back("youmu");
+	/*v1.push_back("youmu");
+	v1.pop_back();
 	v1.push_back("lew");
 	v1.push_back("cherno3");
 	v1.push_back("cherno4");
 	v1.push_back("cherno5");
 	v1.push_back("cherno6");
-	v1.push_back("cherno7");
-	v1.push_back("cherno8");
-	v1.push_back("cherno9");
-	v1.push_back("cherno10");
-	v1.push_back("cherno11");
-	v1.pop_back();
-	v1.push_back("cherno12");
+	v1.push_back("cherno7");*/
 	printf("\n***************************\n");
 	//v1.clear();
-	Vector<Entity> v2;
-	v2.emplace_back("youmu");
-	v2.emplace_back("lew");
-	v2.emplace_back("cherno");
+	v1.emplace_back("youmu");
+	v1.emplace_back("youmu");
+	v1.emplace_back("youmu");
+	v1.emplace_back("youmu");
 
 	// std::cin.get();
 }
