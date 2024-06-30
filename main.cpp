@@ -1,11 +1,12 @@
-//#include <algorithm>
-//#include <array>
+// #include <algorithm>
+// #include <array>
+#include <cstring>
 #include <iostream>
-//#include <string>
-//#include <vector>
-//#include "./MySTL/Array.h"
+// #include <string>
+// #include <vector>
+// #include "./MySTL/Array.h"
 #include "./MySTL/Vector.h"
-//#include "./SortAlgorithm/Sort.h"
+// #include "./SortAlgorithm/Sort.h"
 //
 using namespace ymstl;
 
@@ -33,14 +34,15 @@ public:
 		_data = other._data;
 
 		// It's very important!
-		// Setting to `nullptr` ensures the destructor won't release the original memory
+		// Setting to `nullptr` ensures the destructor won't release the
+		// original memory
 		other._data = nullptr;
 		other._size = 0;
 	}
 
 	String& operator=(String&& other) noexcept {
 		printf("String is Moved by `operator=`\n");
-		delete[] _data;	// If not done, it might lead to memory leaks.
+		delete[] _data;  // If not done, it might lead to memory leaks.
 		_size = other._size;
 		_data = other._data;
 		other._data = nullptr;
@@ -49,10 +51,24 @@ public:
 		return *this;
 	}
 
+	String& operator=(const String& other) noexcept {
+		printf("String is Copied by `operator=`\n");
+		delete[] _data;
+		_size = other._size;
+		_data = new char[_size];
+		for (size_t i = 0; i < _size; i++) {
+			_data[i] = other._data[i];
+		}
+
+		return *this;
+	}
+
 	~String() {
 		printf("String is Destroyed\n");
 		delete[] _data;
 	}
+
+	size_t size() const { return _size; }
 
 	void print() {
 		for (size_t i = 0; i < _size; i++)
@@ -67,27 +83,38 @@ private:
 
 class Entity {
 public:
-	Entity(const String& name) :_name(name) {}
+	Entity() = default;
+	Entity(const String& name) : _name(name) {}
 
-	Entity(String&& name) :_name(std::move(name)) {}
+	Entity(String&& name) : _name(std::move(name)) {}
 
-	void printName() {
-		_name.print();
-	}
+	void printName() { _name.print(); }
 
 private:
 	String _name;
 };
 
 int main() {
-	Vector<int> v1;
-	v1.print();
-	v1.push_back(1);
-	v1.print();
-	v1.push_back(2);
-	v1.print();
-	v1.push_back(3);
-	v1.print();
+	Vector<String> v1;
+	v1.push_back("youmu");
+	v1.push_back("lew");
+	v1.push_back("cherno3");
+	v1.push_back("cherno4");
+	v1.push_back("cherno5");
+	v1.push_back("cherno6");
+	v1.push_back("cherno7");
+	v1.push_back("cherno8");
+	v1.push_back("cherno9");
+	v1.push_back("cherno10");
+	v1.push_back("cherno11");
+	v1.pop_back();
+	v1.push_back("cherno12");
+	printf("\n***************************\n");
+	//v1.clear();
+	Vector<Entity> v2;
+	v2.emplace_back("youmu");
+	v2.emplace_back("lew");
+	v2.emplace_back("cherno");
 
-	//std::cin.get();
+	// std::cin.get();
 }
