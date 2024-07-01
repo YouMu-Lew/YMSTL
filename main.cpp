@@ -66,6 +66,7 @@ public:
 	~String() {
 		printf("String is Destroyed\n");
 		delete[] _data;
+		_data = nullptr;
 	}
 
 	size_t size() const { return _size; }
@@ -95,21 +96,35 @@ private:
 };
 
 int main() {
+	String* a = nullptr;
+	delete[] a;
 	Vector<String> v1;
-	/*v1.push_back("youmu");
-	v1.pop_back();
-	v1.push_back("lew");
-	v1.push_back("cherno3");
-	v1.push_back("cherno4");
-	v1.push_back("cherno5");
-	v1.push_back("cherno6");
-	v1.push_back("cherno7");*/
 	printf("\n***************************\n");
-	//v1.clear();
 	v1.emplace_back("youmu");
+	printf("\n***************************\n");
+	//v1.push_back("lew");
+	v1.pop_back();
+	printf("\n***************************\n");
+	v1.push_back("cherno3");
+	printf("\n***************************\n");
+	v1.push_back("cherno4");
+	printf("\n***************************\n");
+	v1.push_back("cherno5");
+	printf("\n***************************\n");
+	v1.push_back("cherno6");
+	printf("\n***************************\n");
+	v1.push_back("cherno7");
+	printf("\n***************************\n");
 	v1.emplace_back("youmu");
+	printf("\n***************************\n");
+	v1.clear();
+	printf("\n***************************\n");
 	v1.emplace_back("youmu");
-	v1.emplace_back("youmu");
+	printf("\n***************************\n");
+	//v1.emplace_back("youmu");
+	//v1.emplace_back("youmu");
+	//v1.pop_back();
+	//v1.emplace_back("error");
 
 	// std::cin.get();
 }
