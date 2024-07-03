@@ -34,6 +34,12 @@ namespace ymstl {
 			return !(*this == other);
 		}
 
+		iterator operator+ (const std::ptrdiff_t off) {
+			iterator temp = *this;
+			temp._ptr += off;
+			return temp;
+		}
+
 	private:
 		pointerType _ptr;
 	};
