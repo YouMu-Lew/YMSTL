@@ -3,7 +3,7 @@
 #include <cstring>
 #include <iostream>
 // #include <string>
-// #include <vector>
+#include <vector>
 // #include "./MySTL/Array.h"
 #include "./MySTL/Vector.h"
 // #include "./SortAlgorithm/Sort.h"
@@ -96,7 +96,39 @@ private:
 };
 
 int main() {
+<<<<<<< HEAD
 	// for test
+=======
+	std::vector<int> v1;
+>>>>>>> 91e314d (test(main.cpp): Add test cases to verify `Vector::iterator`)
 
-	// std::cin.get();
+	Vector<int> v2;
+	v2.emplace_back(1);
+	v2.emplace_back(2);
+	v2.emplace_back(2);
+	v2.emplace_back(3);
+	v2.emplace_back(3);
+	v2.emplace_back(3);
+	v2.emplace_back(3);
+
+	std::cout << "\nprint by for loop using int i\n";
+	for (int i = 0; i < v2.size(); i++) {
+		std::cout << v2[i] << " ";
+	}
+	std::cout << "\nprint by for loop using int i\n";
+
+	std::cout << "\nprint by for loop using iterator\n";
+	for (Vector<int>::iterator it = v2.begin(); it != v2.end(); ++it) {
+		std::cout << *it << " ";
+	}
+	std::cout << "\nprint by for loop using iterator\n";
+
+	std::cout << "\nprint by for loop using auto\n";
+
+	for (auto i : v2){
+		std::cout << i << " ";
+	}
+	std::cout << "\nprint by for loop using auto\n";
+
+	//std::cin.get();
 }

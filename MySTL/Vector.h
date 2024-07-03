@@ -1,8 +1,55 @@
 #pragma once
 namespace ymstl {
+	template<typename Vector>
+	class VectorIterator {
+	public:
+		using iterator = VectorIterator;
+		using valueType = typename Vector::valueType;
+		using pointerType = valueType*;
+		using referenceType = valueType&;
+
+		VectorIterator() = default;
+		VectorIterator(pointerType ptr) :_ptr(ptr) {}
+
+		referenceType operator*()const noexcept {
+			return *_ptr;
+		}
+
+		const iterator& operator++() noexcept {
+			++_ptr;
+			return *this;
+		}
+
+		const iterator operator++(int) noexcept {
+			const iterator tempIt = *this;
+			++*this;
+			return tempIt;
+		}
+
+		bool operator==(const iterator& other) const noexcept {
+			return _ptr == other._ptr;
+		}
+
+		bool operator!=(const iterator& other) const noexcept {
+			return !(*this == other);
+		}
+
+		iterator operator+ (const std::ptrdiff_t off) {
+			iterator temp = *this;
+			temp._ptr += off;
+			return temp;
+		}
+
+	private:
+		pointerType _ptr;
+	};
+
 	template <typename T>
 	class Vector {
 	public:
+		using iterator = VectorIterator<Vector>;
+		using valueType = T;
+
 		Vector() { _reAllocate(2); }
 
 		~Vector() {
@@ -10,8 +57,21 @@ namespace ymstl {
 			::operator delete(_data, _capacity * sizeof(T));
 		}
 
-		T* begin() { return _data; }
-		T* end() { return _data + _size; }
+		iterator begin() noexcept {
+			return iterator(_data);
+		}
+
+		const iterator begin() const noexcept {
+			return iterator(_data);
+		}
+
+		iterator end() noexcept {
+			return iterator(_data + _size);
+		}
+
+		const iterator end() const noexcept {
+			return iterator(_data + _size);
+		}
 
 		constexpr size_t size() const { return _size; }
 
