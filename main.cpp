@@ -96,35 +96,7 @@ private:
 };
 
 int main() {
-	String* a = nullptr;
-	delete[] a;
-	Vector<String> v1;
-	printf("\n***************************\n");
-	v1.emplace_back("youmu");
-	printf("\n***************************\n");
-	//v1.push_back("lew");
-	v1.pop_back();
-	printf("\n***************************\n");
-	v1.push_back("cherno3");
-	printf("\n***************************\n");
-	v1.push_back("cherno4");
-	printf("\n***************************\n");
-	v1.push_back("cherno5");
-	printf("\n***************************\n");
-	v1.push_back("cherno6");
-	printf("\n***************************\n");
-	v1.push_back("cherno7");
-	printf("\n***************************\n");
-	v1.emplace_back("youmu");
-	printf("\n***************************\n");
-	v1.clear();
-	printf("\n***************************\n");
-	v1.emplace_back("youmu");
-	printf("\n***************************\n");
-	//v1.emplace_back("youmu");
-	//v1.emplace_back("youmu");
-	//v1.pop_back();
-	//v1.emplace_back("error");
+	// for test
 
 	// std::cin.get();
 }
