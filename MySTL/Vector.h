@@ -52,6 +52,36 @@ namespace ymstl {
 
 		Vector() { _reAllocate(2); }
 
+		Vector(const Vector& other) {
+			_reAllocate(other.size());
+			for (auto& element : other) {
+				emplace_back(element);
+			}
+		}
+
+		Vector(std::initializer_list<T> list) {
+			_reAllocate(list.size());
+			for (auto& element : list) {
+				push_back(std::move(element));
+			}
+		}
+
+		Vector& operator=(std::initializer_list<T> list) {
+			clear();
+			for (auto& element : list) {
+				push_back(std::move(element));
+			}
+			return *this;
+		}
+
+		Vector& operator=(const Vector& other) {
+			clear();
+			for (auto element : other) {
+				push_back(element);
+			}
+			return *this;
+		}
+
 		~Vector() {
 			clear();
 			::operator delete(_data, _capacity * sizeof(T));
