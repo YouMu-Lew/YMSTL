@@ -82,6 +82,10 @@ namespace ymstl {
 			return *this;
 		}
 
+		operator T* () {
+			return _data;
+		}
+
 		~Vector() {
 			clear();
 			::operator delete(_data, _capacity * sizeof(T));
