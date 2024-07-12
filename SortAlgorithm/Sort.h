@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _YMSTL_SORT_H_
+#define _YMSTL_SORT_H_
 #include "Utils.h"
 
 namespace ymstl {
@@ -117,5 +118,6 @@ namespace ymstl {
 	static void quickSort(Iter _begin, Iter _end) {
 		quickSort(_begin, _end, less);
 	}
-
 };  // namespace ymstl
+
+#endif // _YMSTL_SORT_H_

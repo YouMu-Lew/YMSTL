@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _YMSTL_UTILS_H
+#define _YMSTL_UTILS_H
+
 #include <random>
 #include <chrono>
 #include <iostream>
@@ -59,5 +61,5 @@ namespace ymstl {
 		std::cout << std::endl;
 		return;
 	}
-
 }
+#endif // !_YMSTL_UTILS_H
