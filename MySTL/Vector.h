@@ -1,4 +1,12 @@
-#pragma once
+#ifndef _YMSTL_VECTOR_H_
+#define _YMSTL_VECTOR_H_
+
+#include <cstddef>
+#include <initializer_list>
+#include <utility>
+#include <stdexcept>
+#include <iostream>
+
 namespace ymstl {
 	template<typename Vector>
 	class VectorIterator {
@@ -213,3 +221,5 @@ namespace ymstl {
 		size_t _size = 0, _capacity = 0;
 	};
 }  // namespace ymstl
+
+#endif // _YMSTL_VECTOR_H_
