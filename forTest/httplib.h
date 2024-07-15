@@ -5,6 +5,8 @@
 //  MIT License
 //
 
+#include "../MySTL/Vector.h"
+
 #ifndef CPPHTTPLIB_HTTPLIB_H
 #define CPPHTTPLIB_HTTPLIB_H
 
@@ -443,7 +445,7 @@ struct MultipartFormData {
   std::string filename;
   std::string content_type;
 };
-using MultipartFormDataItems = std::vector<MultipartFormData>;
+using MultipartFormDataItems = ymstl::Vector<MultipartFormData>;
 using MultipartFormDataMap = std::multimap<std::string, MultipartFormData>;
 
 class DataSink {
@@ -493,7 +495,7 @@ struct MultipartFormDataProvider {
   std::string filename;
   std::string content_type;
 };
-using MultipartFormDataProviderItems = std::vector<MultipartFormDataProvider>;
+using MultipartFormDataProviderItems = ymstl::Vector<MultipartFormDataProvider>;
 
 using ContentReceiverWithProgress =
     std::function<bool(const char *data, size_t data_length, uint64_t offset,
@@ -529,7 +531,7 @@ public:
 };
 
 using Range = std::pair<ssize_t, ssize_t>;
-using Ranges = std::vector<Range>;
+using Ranges = ymstl::Vector<Range>;
 
 struct Request {
   std::string method;
@@ -573,7 +575,7 @@ struct Request {
 
   bool has_file(const std::string &key) const;
   MultipartFormData get_file_value(const std::string &key) const;
-  std::vector<MultipartFormData> get_file_values(const std::string &key) const;
+  ymstl::Vector<MultipartFormData> get_file_values(const std::string &key) const;
 
   // private members...
   size_t redirect_count_ = CPPHTTPLIB_REDIRECT_MAX_COUNT;
@@ -736,7 +738,7 @@ private:
   };
   friend struct worker;
 
-  std::vector<std::thread> threads_;
+  ymstl::Vector<std::thread> threads_;
   std::list<std::function<void()>> jobs_;
 
   bool shutdown_;
@@ -800,10 +802,10 @@ private:
   // Contains static path fragments to match against, excluding the '/' after
   // path params
   // Fragments are separated by path params
-  std::vector<std::string> static_fragments_;
+  ymstl::Vector<std::string> static_fragments_;
   // Stores the names of the path parameters to be used as keys in the
   // Request::path_params map
-  std::vector<std::string> param_names_;
+  ymstl::Vector<std::string> param_names_;
 };
 
 /**
@@ -944,9 +946,9 @@ protected:
 
 private:
   using Handlers =
-      std::vector<std::pair<std::unique_ptr<detail::MatcherBase>, Handler>>;
+      ymstl::Vector<std::pair<std::unique_ptr<detail::MatcherBase>, Handler>>;
   using HandlersForContentReader =
-      std::vector<std::pair<std::unique_ptr<detail::MatcherBase>,
+      ymstl::Vector<std::pair<std::unique_ptr<detail::MatcherBase>,
                             HandlerWithContentReader>>;
 
   static std::unique_ptr<detail::MatcherBase>
@@ -1004,7 +1006,7 @@ private:
     std::string base_dir;
     Headers headers;
   };
-  std::vector<MountPointEntry> base_dirs_;
+  ymstl::Vector<MountPointEntry> base_dirs_;
   std::map<std::string, std::string> file_extension_and_mimetype_map_;
   std::string default_file_mimetype_ = "application/octet-stream";
   Handler file_request_handler_;
@@ -1885,7 +1887,7 @@ private:
   std::mutex ctx_mutex_;
   std::once_flag initialize_cert_;
 
-  std::vector<std::string> host_components_;
+  ymstl::Vector<std::string> host_components_;
 
   long verify_result_ = 0;
 
@@ -1943,7 +1945,7 @@ inline ssize_t Stream::write_format(const char *fmt, const Args &...args) {
   auto n = static_cast<size_t>(sn);
 
   if (n >= buf.size() - 1) {
-    std::vector<char> glowable_buf(buf.size());
+    ymstl::Vector<char> glowable_buf(buf.size());
 
     while (n >= glowable_buf.size() - 1) {
       glowable_buf.resize(glowable_buf.size() * 2);
@@ -2165,7 +2167,7 @@ Client::set_write_timeout(const std::chrono::duration<Rep, Period> &duration) {
 
 std::string hosted_at(const std::string &hostname);
 
-void hosted_at(const std::string &hostname, std::vector<std::string> &addrs);
+void hosted_at(const std::string &hostname, ymstl::Vector<std::string> &addrs);
 
 std::string append_query_params(const std::string &path, const Params &params);
 
@@ -3112,7 +3114,7 @@ private:
   time_t write_timeout_sec_;
   time_t write_timeout_usec_;
 
-  std::vector<char> read_buff_;
+  ymstl::Vector<char> read_buff_;
   size_t read_buff_off_ = 0;
   size_t read_buff_content_size_ = 0;
 
@@ -5374,14 +5376,14 @@ private:
 } // namespace detail
 
 inline std::string hosted_at(const std::string &hostname) {
-  std::vector<std::string> addrs;
+  ymstl::Vector<std::string> addrs;
   hosted_at(hostname, addrs);
   if (addrs.empty()) { return std::string(); }
   return addrs[0];
 }
 
 inline void hosted_at(const std::string &hostname,
-                      std::vector<std::string> &addrs) {
+                      ymstl::Vector<std::string> &addrs) {
   struct addrinfo hints;
   struct addrinfo *result;
 
@@ -5506,9 +5508,9 @@ inline MultipartFormData Request::get_file_value(const std::string &key) const {
   return MultipartFormData();
 }
 
-inline std::vector<MultipartFormData>
+inline ymstl::Vector<MultipartFormData>
 Request::get_file_values(const std::string &key) const {
-  std::vector<MultipartFormData> values;
+  ymstl::Vector<MultipartFormData> values;
   auto rng = files.equal_range(key);
   for (auto it = rng.first; it != rng.second; it++) {
     values.push_back(it->second);
@@ -9226,7 +9228,7 @@ inline bool SSLClient::check_host_name(const char *pattern,
 
   // Wildcard match
   // https://bugs.launchpad.net/ubuntu/+source/firefox-3.0/+bug/376484
-  std::vector<std::string> pattern_components;
+  ymstl::Vector<std::string> pattern_components;
   detail::split(&pattern[0], &pattern[pattern_len], '.',
                 [&](const char *b, const char *e) {
                   pattern_components.emplace_back(b, e);
