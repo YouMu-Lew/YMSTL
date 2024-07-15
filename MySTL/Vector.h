@@ -48,6 +48,10 @@ namespace ymstl {
 			return temp;
 		}
 
+		pointerType operator->() const noexcept {
+			return _ptr;
+		}
+
 	private:
 		pointerType _ptr;
 	};
@@ -59,6 +63,13 @@ namespace ymstl {
 		using valueType = T;
 
 		Vector() { _reAllocate(2); }
+
+		Vector(size_t size, T value) {
+			_reAllocate(size);
+			for (size_t i = 0; i < size; i++) {
+				emplace_back(value);
+			}
+		}
 
 		Vector(const Vector& other) {
 			_reAllocate(other.size());
@@ -169,6 +180,29 @@ namespace ymstl {
 				printf("pop_back a element\n");
 				_data[--_size].~T();
 			}
+		}
+
+		iterator erase(iterator pos) {
+			if (pos == end()) {
+				return pos;
+			}
+			for (auto it = pos; it != end(); ++it) {
+				*it = *(it + 1);
+			}
+			pop_back();
+			return pos;
+		}
+
+		T* data() noexcept{
+			return _data;
+		}
+
+		const T* data() const noexcept{
+			return _data;
+		}
+
+		bool empty() const {
+			return _size == 0;
 		}
 
 		void clear() {
