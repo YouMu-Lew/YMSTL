@@ -34,7 +34,7 @@ namespace ymstl {
 		}
 
 		~thread_pool() {
-			for(auto worker:workers_) {
+			for(auto& worker:workers_) {
 				if(worker.joinable())
 					worker.join();
 			}
@@ -44,9 +44,9 @@ namespace ymstl {
 		}
 
 		template<typename Func, typename... Args, typename ReturnType = std::invoke_result_t<Func(Args...)>>
-		ReturnType enqueue(Func&& func,Args&& args){
+		ReturnType enqueue(Func&& func,Args&&... args){
 
-			auto task = std::make_shared<std::packaged_task<return_type()>>(std::bind(std::forward<Func>(func), std::forward<Args>(args)...));
+			auto task = std::make_shared<std::packaged_task<ReturnType()>>(std::bind(std::forward<Func>(func), std::forward<Args>(args)...));
 			auto res = task->get_future();
 			{
 				std::lock_guard lock{ task_mutex_ };
