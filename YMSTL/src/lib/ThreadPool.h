@@ -9,7 +9,10 @@
 namespace ymstl {
 	class thread_pool {
 	public:
-		thread_pool(const size_t n) {
+		thread_pool(const unsigned int n = 5):n_(n) {
+#ifdef _DEBUG
+			std::cout << "构造 thread_pool(" << n_ << ")\n";
+#endif
 			// 构造大小为 n 的线程池
 			workers_.reserve(n);
 			for(size_t i = 0; i < n; ++i) {
@@ -34,17 +37,23 @@ namespace ymstl {
 		}
 
 		~thread_pool() {
-			for(auto& worker:workers_) {
-				if(worker.joinable())
-					worker.join();
-			}
+#ifdef _DEBUG
+			std::cout << "析构 thread_pool(" << n_ << ")\n";
+#endif
+
 			stop_ = true;
-			std::lock_guard lk{ task_mutex_ };
-			while (!tasks_.empty()) { tasks_.pop(); }
+			cv_.notify_all();
 		}
 
-		template<typename Func, typename... Args, typename ReturnType = std::invoke_result_t<Func(Args...)>>
-		ReturnType enqueue(Func&& func,Args&&... args){
+		thread_pool(const thread_pool&) = delete;
+		thread_pool(thread_pool&&) = delete;
+
+		thread_pool& operator=(const thread_pool&) = delete;
+		thread_pool& operator=(thread_pool&&) = delete;
+
+		template<typename Func, typename... Args, typename ReturnType = std::invoke_result_t<Func&&, Args&&...>>
+			requires std::invocable<Func, Args...>
+		std::future<ReturnType> enqueue(Func&& func,Args&&... args){
 
 			auto task = std::make_shared<std::packaged_task<ReturnType()>>(std::bind(std::forward<Func>(func), std::forward<Args>(args)...));
 			auto res = task->get_future();
@@ -57,9 +66,10 @@ namespace ymstl {
 		}
 
 	private:
+		const unsigned int n_;
 		std::mutex task_mutex_;
 		std::queue<std::function<void()>> tasks_;
-		std::vector<std::thread> workers_;
+		std::vector<std::jthread> workers_;
 		std::condition_variable cv_;
 		bool stop_ = false;
 	};
