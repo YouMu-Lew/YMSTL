@@ -35,11 +35,10 @@
 .vs/
 MyCppSTL/
 Debug/
+x64/
 
 *.sln
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
+*vcxproj*
 *.log
 *.tlog
 *.lastbuildstate
