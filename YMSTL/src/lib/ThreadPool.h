@@ -6,6 +6,10 @@
 #include <future>
 #include <type_traits>
 
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 namespace ymstl {
 	class thread_pool {
 	public:
