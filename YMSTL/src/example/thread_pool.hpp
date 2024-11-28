@@ -11,7 +11,7 @@ inline int fibonacci(const int n) {
 	return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-inline void test_thread_pool(const int task_num = 30, const int thread_num = 5) {
+inline void test_thread_pool(const int task_num = 30, const unsigned int thread_num = 5) {
 	std::cout << "任务数：" << task_num << ", 线程池数：" << thread_num << '\n';
 	std::vector<int> results{};
 	results.reserve(task_num);

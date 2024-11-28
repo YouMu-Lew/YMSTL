@@ -11,12 +11,16 @@
 #endif
 
 namespace ymstl {
+	// TODO
+	// feat: 是否可以实现类似 std::future::get() 方法
+	// 具体功能为阻塞线程池所在线程，等待线程池中所有任务均执行完毕后，停止阻塞
+	// 返回值视情况而定
 	class thread_pool {
 	public:
-		thread_pool(const unsigned int n = 5):n_(n) {
-#ifdef _DEBUG
+		explicit thread_pool(const unsigned int n = 5) : n_(n) {
+			#ifdef _DEBUG
 			std::cout << "构造 thread_pool(" << n_ << ")\n";
-#endif
+			#endif
 			// 构造大小为 n 的线程池
 			workers_.reserve(n);
 			for(size_t i = 0; i < n; ++i) {
@@ -41,9 +45,9 @@ namespace ymstl {
 		}
 
 		~thread_pool() {
-#ifdef _DEBUG
+			#ifdef _DEBUG
 			std::cout << "析构 thread_pool(" << n_ << ")\n";
-#endif
+			#endif
 
 			stop_ = true;
 			cv_.notify_all();
@@ -55,15 +59,21 @@ namespace ymstl {
 		thread_pool& operator=(const thread_pool&) = delete;
 		thread_pool& operator=(thread_pool&&) = delete;
 
-		template<typename Func, typename... Args, typename ReturnType = std::invoke_result_t<Func&&, Args&&...>>
+		template<typename Func, typename... Args,
+			typename ReturnType = std::invoke_result_t<Func&&, Args &&...>>
 			requires std::invocable<Func, Args...>
-		std::future<ReturnType> enqueue(Func&& func,Args&&... args){
+		std::future<ReturnType> enqueue(Func&& func, Args &&...args) {
 
 			auto task = std::make_shared<std::packaged_task<ReturnType()>>(std::bind(std::forward<Func>(func), std::forward<Args>(args)...));
 			auto res = task->get_future();
 			{
 				std::lock_guard lock{ task_mutex_ };
-				tasks_.emplace([task] {(*task)(); });	// 调用 std::packaged_task 中 operator() 方法，等同于 task->operator()()
+				if(stop_) {
+					throw std::runtime_error("enqueue task when thread_pool stopped.");
+				}
+				tasks_.emplace([task] {(*task)(); });
+				// 调用 std::packaged_task 中 operator()
+				// 方法，等同于 task->operator()()
 			}
 			cv_.notify_one();
 			return res;
