@@ -5,11 +5,14 @@
 #include <string>
 
 namespace ymstl {
-	template<typename Period = std::chrono::microseconds>
-		requires std::_Is_specialization_v<Period, std::chrono::duration>;
+	template <typename Period = std::chrono::microseconds>
+		requires std::chrono::_Is_duration_v<Period>
 	class timer {
 	public:
-		explicit timer(const std::string& name = "Timer") :name_(name), start_point_(std::chrono::steady_clock::now()) {
+		//static_assert(std::chrono::_Is_duration_v<Period>, "Period should be duration.");
+
+		explicit timer(const std::string& name = "Timer")
+			: name_(name), start_point_(std::chrono::steady_clock::now()) {
 			std::cout << "Timer<" << name_ << "> start\n";
 		}
 
@@ -24,8 +27,8 @@ namespace ymstl {
 		timer& operator=(const timer&) = delete;
 		timer& operator=(timer&&) = delete;
 
-		void split() const{
-			const auto end_point = std::chrono::high_resolution_clock::now();
+		void split() const {
+			const auto end_point = std::chrono::steady_clock::now();
 			const auto duration = std::chrono::duration_cast<Period>(end_point - start_point_);
 			std::cout << "Timer<" << name_ << "> taken: " << duration << '\n';
 		}
